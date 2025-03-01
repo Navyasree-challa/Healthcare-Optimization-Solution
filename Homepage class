@@ -1,0 +1,146 @@
+public class Homepage {
+
+    
+
+    public List<Patient__c> patlists { get; set; }
+
+    public List<Doctor__c> doclists { get; set; }
+
+    public List<Appointment__c> applists { get; set; }
+
+    public List<Bed_Reservation__c> BedReserlists { get; set; }
+
+    public List<Bed_Reservation__c> matchingReservationslists { get; set; }
+
+    public String searchCriteria { get; set; }
+
+    public String selectedRecordId { get; set; }
+
+    
+
+    public Homepage() {
+
+        patlists = [Select ID, Patient_ID__c, Name, Mobile__c, (Select ID, Name, Appointment_Date__c From Appointments__r) From Patient__c ORDER BY CreatedDate DESC LIMIT 10];
+
+        doclists = [select ID, Doctor_ID__c, Name, Mobile__c, (Select ID, Name, Appointment_Date__c From Appointments__r) from Doctor__c ORDER BY CreatedDate DESC LIMIT 10];
+
+        applists = [select ID, Name, Appointment_Date__c, Patient_Name__c, Doctor_Name__c, Doctor_Name__r.Name, Patient_Name__r.Name from Appointment__c ORDER BY CreatedDate DESC LIMIT 10];
+
+        BedReserlists = [select ID, Patient__c, Patient__r.Name, Bed_Number__c, Reservation_Date__c, Start_Time__c, End_Time__c from Bed_Reservation__c ORDER BY CreatedDate DESC LIMIT 10];
+
+    }
+
+    
+
+    public PageReference performSearch() {
+
+        patlists = [SELECT ID, Patient_ID__c, Name, Mobile__c, (SELECT ID, Name, Appointment_Date__c FROM Appointments__r) FROM Patient__c WHERE Name LIKE :searchCriteria OR Mobile__c LIKE :searchCriteria OR Name LIKE :searchCriteria];
+
+        doclists = [SELECT ID, Doctor_ID__c, Name, Mobile__c, (SELECT ID, Name FROM Appointments__r) FROM Doctor__c WHERE Name LIKE :searchCriteria OR Mobile__c LIKE :searchCriteria];
+
+        Date searchDate = Date.valueOf(searchCriteria);
+
+        applists = [SELECT ID, Name, Appointment_Date__c, Patient_Name__c, Doctor_Name__c, Doctor_Name__r.Name, Patient_Name__r.Name FROM Appointment__c WHERE Name LIKE :searchCriteria OR Appointment_Date__c = :searchDate];
+
+        
+
+        return null;
+
+    }
+
+    
+
+    public PageReference deletePatient() {
+
+        try {
+
+            Patient__c patientToDelete = [SELECT Id FROM Patient__c WHERE Id = :selectedRecordId];
+
+            delete patientToDelete;
+
+            // Refresh the patient list after deletion
+
+            patlists = [Select ID, Patient_ID__c, Name, Mobile__c, (Select ID, Name, Appointment_Date__c From Appointments__r) From Patient__c];
+
+        } catch(Exception e) {
+
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'An error occurred while deleting the patient.'));
+
+        }
+
+        return null;
+
+    }
+
+    
+
+    
+
+    public PageReference deleteDoctor() {
+
+        try {
+
+            Doctor__c doctorToDelete = [SELECT Id FROM Doctor__c WHERE Id = :selectedRecordId];
+
+            delete doctorToDelete;
+
+            // Refresh the doctor list after deletion
+
+            doclists = [SELECT ID, Doctor_ID__c, Name, Mobile__c, (SELECT ID, Name, Appointment_Date__c FROM Appointments__r) FROM Doctor__c];
+
+        } catch(Exception e) {
+
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'An error occurred while deleting the doctor.'));
+
+        }
+
+        return null;
+
+    }
+
+    public PageReference deleteAppointment() {
+
+        try {
+
+            Appointment__c appointmentToDelete = [SELECT Id FROM Appointment__c WHERE Id = :selectedRecordId];
+
+            delete appointmentToDelete;
+
+            // Refresh the appointment list after deletion
+
+            applists = [SELECT ID, Name, Appointment_Date__c, Patient_Name__c, Doctor_Name__c, Doctor_Name__r.Name, Patient_Name__r.Name FROM Appointment__c];
+
+        } catch(Exception e) {
+
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'An error occurred while deleting the appointment.'));
+
+        }
+
+        return null;
+
+    }
+
+    public PageReference deleteBedReservation() {
+
+        try {
+
+            Bed_Reservation__c bedReservationToDelete = [SELECT Id FROM Bed_Reservation__c WHERE Id = :selectedRecordId];
+
+            delete bedReservationToDelete;
+
+            // Refresh the bed reservation list after deletion
+
+            BedReserlists = [SELECT ID, Patient__c, Patient__r.Name, Bed_Number__c, Reservation_Date__c, Start_Time__c, End_Time__c FROM Bed_Reservation__c];
+
+        } catch(Exception e) {
+
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'An error occurred while deleting the bed reservation.'));
+
+        }
+
+        return null;
+
+    }
+
+}
+
