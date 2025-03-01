@@ -1,0 +1,46 @@
+public class Doctorcontroller {
+
+    
+
+    public Doctor__c d {get; set;}
+
+    
+
+    public Doctorcontroller(){
+
+        d = new Doctor__c();
+
+    }
+
+    
+
+    public PageReference save() {
+
+        insert d;
+
+        PageReference pageRef = new PageReference('/' + d.Id);
+
+        return pageRef;
+
+    }
+
+    
+
+    public PageReference saveandnew() {
+
+        insert d;
+
+        
+
+        PageReference PageRef =Page.Doctor;
+
+        d.clear();
+
+        return PageRef;
+
+    }
+
+    
+
+}
+
