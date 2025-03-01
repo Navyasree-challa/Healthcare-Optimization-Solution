@@ -1,0 +1,66 @@
+<apex:page sidebar="false" showHeader="false" controller="patientcontroller">
+
+    <apex:form >
+
+        <apex:pageBlock title="NEW PATIENT DETAILS">
+
+            
+
+            
+
+            <apex:pageBlock >
+
+                
+
+                <apex:pageBlockSection >
+
+                    <apex:inputField value="{!p.Patient_ID__c }"/>
+
+                    <apex:inputField value="{!p.Address__c }"/>
+
+                    <apex:inputField value="{!p.Name}" required="true"/>
+
+                    <apex:inputField value="{!p.DOB__c}"/>
+
+                    <apex:inputField value="{!p.Email__c}"/>
+
+                    <apex:inputField value="{!p.Age__c }"/>
+
+                    <apex:inputField value="{!p.Mobile__c}"/>
+
+                    <apex:inputField value="{!p.Gender__c}"/>
+
+                    <apex:inputField value="{!p.Blood_Group__c}"/>
+
+                    
+
+                </apex:pageBlockSection>
+
+                
+
+                <apex:pageBlockButtons >
+
+                    <apex:commandButton value="Save" action="{!save}" />
+
+                    <apex:commandButton value="Save & New" action="{!saveandnew}" />
+
+                    <apex:commandButton value="Cancel" action="https://smartbridge-1fa-dev-ed.develop.lightning.force.com/lightning/n/Home_Page" immediate="true"/>
+
+                    
+
+                </apex:pageBlockButtons>
+
+            </apex:pageBlock>
+
+            
+
+            
+
+        </apex:pageBlock>
+
+    </apex:form>
+
+    
+
+</apex:page>
+
