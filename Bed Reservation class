@@ -1,0 +1,137 @@
+public class BedReservationController {
+
+    public Bed_Reservation__c r { get; set; }
+
+    
+
+    public BedReservationController() {
+
+        r = new Bed_Reservation__c();
+
+    }
+
+    
+
+    public PageReference reserveBed(){
+
+        DateTime now = DateTime.now();
+
+        
+
+        if (r.Reservation_Date__c < Date.today() || (r.Reservation_Date__c == Date.today() && r.Start_Time__c <= now.time())) {
+
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Booking time for the selected date has already passed.'));
+
+            return null;
+
+        }
+
+        
+
+        List<Bed_Reservation__c> existingReservations = [
+
+            SELECT Id
+
+            FROM Bed_Reservation__c
+
+            WHERE Bed_Type__c = :r.Bed_Type__c
+
+            AND Reservation_Date__c = :r.Reservation_Date__c
+
+            AND ((Start_Time__c >= :r.Start_Time__c AND Start_Time__c <= :r.End_Time__c)
+
+                 OR (End_Time__c >= :r.Start_Time__c AND End_Time__c <= :r.End_Time__c))
+
+        ];
+
+        
+
+        if (existingReservations.isEmpty()) {
+
+            // No overlapping reservations, proceed with booking
+
+            r.Booking_Status__c = 'Booked';
+
+            insert r;
+
+            PageReference pageRef = new PageReference('/' + r.Id);
+
+            return pageRef;
+
+        } else {
+
+            // Bed is already booked for the selected date and time range
+
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Bed is already booked for the selected date and time range.'));
+
+            return null;
+
+        }
+
+    }
+
+    
+
+    public PageReference reserveandnew(){
+
+        DateTime now = DateTime.now();
+
+        
+
+        if (r.Reservation_Date__c < Date.today() || (r.Reservation_Date__c == Date.today() && r.Start_Time__c <= now.time())) {
+
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Booking time for the selected date has already passed.'));
+
+            return null;
+
+        }
+
+        
+
+        List<Bed_Reservation__c> existingReservations = [
+
+            SELECT Id
+
+            FROM Bed_Reservation__c
+
+            WHERE Bed_Type__c = :r.Bed_Type__c
+
+            AND Reservation_Date__c = :r.Reservation_Date__c
+
+            AND ((Start_Time__c >= :r.Start_Time__c AND Start_Time__c <= :r.End_Time__c)
+
+                 OR (End_Time__c >= :r.Start_Time__c AND End_Time__c <= :r.End_Time__c))
+
+        ];
+
+        
+
+        if (existingReservations.isEmpty()) {
+
+            // No overlapping reservations, proceed with booking
+
+            r.Booking_Status__c = 'Booked';
+
+            insert r;
+
+            PageReference pageref = Page.BedReservation;
+
+            r = new Bed_Reservation__c();
+
+            return pageref;
+
+        } else {
+
+            // Bed is already booked for the selected date and time range
+
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Bed is already booked for the selected date and time range.'));
+
+            return null;
+
+        }
+
+    }
+
+}
+
+
