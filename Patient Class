@@ -1,0 +1,42 @@
+public class patientcontroller {
+
+    public Patient__c p {get; set;}
+
+    
+
+    public patientcontroller(){
+
+        p = new Patient__c();
+
+    }
+
+    
+
+    public PageReference save() {
+
+        insert p;
+
+        PageReference pageRef = new PageReference('/' + p.Id);
+
+        return pageRef;
+
+    }
+
+    
+
+    public PageReference saveandnew() {
+
+        insert p;
+
+        
+
+        PageReference PageRef =Page.patient;
+
+        p.clear();
+
+        return PageRef;
+
+    }
+
+}
+
