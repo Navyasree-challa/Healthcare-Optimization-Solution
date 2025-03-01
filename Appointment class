@@ -1,0 +1,44 @@
+public class Appointmentcontroller {
+
+    
+
+    public Appointment__c a{get;set;}
+
+    
+
+    public Appointmentcontroller(){
+
+        a=new Appointment__c();
+
+    }
+
+    public pagereference save(){
+
+        insert a;
+
+        PageReference pageRef = new PageReference('/' + a.Id);
+
+        return pageRef;
+
+    }
+
+    public pagereference saveandnew(){
+
+        insert a;
+
+        
+
+        pagereference pageref =Page.Appointment;
+
+        a.clear();
+
+        return pageref;
+
+    }
+
+    
+
+    
+
+}
+
