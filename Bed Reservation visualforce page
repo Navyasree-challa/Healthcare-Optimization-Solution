@@ -1,0 +1,39 @@
+<apex:page controller="BedReservationController">
+
+    <apex:form >
+
+        <apex:pageBlock >
+
+            <apex:pageBlockSection title="Bed Reservation">
+
+                <apex:inputField value="{!r.Bed_Type__c}" required="true"/>
+
+                <apex:inputField value="{!r.Bed_Number__c}" required="true"/>
+
+                <apex:inputField value="{!r.Reservation_Date__c}" required="true"/>
+
+                <apex:inputField value="{!r.Start_Time__c}" required="true"/>
+
+                <apex:inputField value="{!r.End_Time__c}" required="true"/>
+
+                <apex:inputField value="{!r.Patient__c}" required="true"/>
+
+            </apex:pageBlockSection>
+
+            <apex:pageBlockButtons >
+
+                <apex:commandButton action="{!reserveBed}" value="Reserve Bed"/>
+
+                <apex:commandButton value="reserveandnew" action="{!reserveandnew}" />
+
+                <apex:commandButton value="Cancel" action="https://smartbridge-1fa-dev-ed.develop.lightning.force.com/lightning/n/Home_Page" immediate="true" />
+
+            </apex:pageBlockButtons>
+
+        </apex:pageBlock>
+
+        <apex:pageMessages />
+
+    </apex:form>
+
+</apex:page>
